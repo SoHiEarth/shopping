@@ -1,0 +1,16 @@
+@import "colors.css";
+
+#header {
+  position: sticky;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5rem 2rem;
+  min-height: 5vh;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--background-color-dark);
+}

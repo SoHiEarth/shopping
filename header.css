@@ -13,4 +13,12 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--background-color-dark);
+  background: var(--background-color);
+}
+
+/* Don't horizontally grid the header on small screens */
+@media (max-width: 600px) {
+  #header {
+    display: block;
+  }
 }

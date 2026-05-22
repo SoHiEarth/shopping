@@ -1,0 +1,53 @@
+@import "../../font.css";
+@import "../../header.css";
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--primary-color);
+  background-color: var(--background-color);
+}
+
+.user-add-container {
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.user-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.user-add-form label {
+  font-weight: bold;
+}
+
+.user-add-form input,
+.user-add-form select {
+  padding: 0.5rem;
+  background-color: var(--background-color);
+  border: 1px solid var(--background-color-darkest); 
+  border-radius: 0.5rem;
+}
+
+.user-add-form button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--quaternary-color);
+  color: var(--background-color);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.user-add-form button:hover {
+  background-color: var(--secondary-color);
+}
+
+.user-add-button {
+  margin-top: 2rem;
+  background-color: var(--background-color-darkest);
+}

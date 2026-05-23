@@ -8,51 +8,14 @@
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
     </style>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </head>
 <body>
     <header id="header">
         <h1 class="noto-sans-jp-bold">商品一覧</h1>
         <h1 class="noto-sans-jp-bold" id="username"></h1>
     </header>
-    <section class="grid-container">
-        <div class="product-card" onclick="show_details('商品A')">
-            <img src="sample-image.png" alt="商品Aの画像" class="product-image">
-            <h2 class="noto-sans-jp-bold">商品A</h2>
-            <p>美味しい野菜です。</p>
-            <p>価格: 1000円</p>
-        </div>
-        
-        <div class="product-detail-card product-detail-card-商品A" id="product-detail-商品A">
-            <img src="sample-image.png" alt="商品Aの画像" class="product-detail-image">
-            <div class="product-detail-info">
-                <div class="product-detail-header">
-                    <h2 class="noto-sans-jp-bold" id="product-name">商品A</h2>
-                    <button class="close-detail-button" onclick="close_details('商品A')">&times;</button>
-                </div>
-                <p id="product-description">美味しい野菜です。</p>
-                <label id="product-price-label" class="label" for="product-price">価格</label>
-                <input type="text" id="product-price" class="noto-sans-jp-bold input-box" value="1000円" readonly>
-                <label for="quantity" class="label">数量</label>
-                <input type="number" class="noto-sans-jp-bold input-box" name="quantity" min="1" value="1">
-                <button class="button" onclick="addToCart('商品A')">カートに追加</button>
-            </div>
-        </div>
-    
-        <div class="product-card" onclick="show_details('商品B')">
-            <img src="sample-image.png" alt="商品Bの画像" class="product-image">
-            <h2 class="noto-sans-jp-bold">商品B</h2>
-            <p>新鮮な果物です。</p>
-            <p>価格: 2000円</p>
-        </div>
-    
-        <div class="product-card" onclick="show_details('商品C')">
-            <img src="sample-image.png" alt="商品Cの画像" class="product-image">
-            <h2 class="noto-sans-jp-bold">商品C</h2>
-            <p>美味しい果物です。</p>
-            <p>価格: 1500円</p>
-        </div>
-    </section>
+    <section class="grid-container"></section>
     <div id="cart-overview">
         <h2 class="noto-sans-jp-bold">合計金額: 5000円</h2>
         <button id="details-button">

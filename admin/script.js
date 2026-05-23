@@ -1,14 +1,3 @@
-// Parse the username from the URL query parameters
-const urlParams = new URLSearchParams(window.location.search);
-const username = urlParams.get('username');
-
-// Display the username in the header
-if (username) {
-  document.getElementById('username').textContent = username + 'さん';
-} else {
-  document.getElementById('username').textContent = 'ゲストさん';
-}
-
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 const supabase = createClient('https://fqektoozvsosmqqraeog.supabase.co', 'sb_publishable_W1QJyDateNq-fU8wmBPRmw_2TFiSwBB')
 
@@ -41,6 +30,8 @@ function formatOrders(value) {
   }
 }
 
+// Retrieve items from the database and display them in the admin interface
+let warningDisplayed = false;
 async function loadProducts() {
   const { data: products, error } = await supabase.from('items').select('*');
   if (error) {
@@ -49,14 +40,34 @@ async function loadProducts() {
   }
   const productList = document.getElementById('product-table-body');
   products.forEach((product) => {
+    // if product price is null, add to warning list
+    if (product.price === null) {
+      const warningList = document.getElementById('warning-list');
+      const warningItem = document.createElement('li');
+      warningItem.textContent = product.name;
+      warningList.appendChild(warningItem);
+      if (!warningDisplayed) {
+        warningDisplayed = true;
+      }
+    }
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${escapeHtml(product.name)}</td>
+      <td>${formatPrice(product.price)}</td>
       <td>${formatOrders(product.orders)}</td>
-      <td>${formatPrice(product.stock)}</td>
+      <td>${product.stock}</td>
     `;
+    // if price is null, add alert class to the price cell
+    if (product.price === null) {
+      row.children[1].classList.add('alert');
+    }
     productList.appendChild(row);
   });
+  // if there are no warnings, hide the warning section
+  if (!warningDisplayed) {
+    const warningContainer = document.getElementById('warning-container');
+    warningContainer.style.display = 'none';
+  }
 }
 
 // Load products when the page is loaded

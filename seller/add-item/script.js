@@ -10,7 +10,6 @@ if (username) {
     document.getElementById('username').textContent = username + 'さん';
 } else {
     document.getElementById('username').textContent = 'ゲストさん';
-    username = 'ゲスト';
 }
 
 async function addItem() {

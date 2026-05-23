@@ -8,25 +8,23 @@
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
     </style>
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="signup.js"></script>
 </head>
 <body>
     <header id="header">
       <h1 class="noto-sans-jp-bold">ユーザー追加</h1>
     </header>
     <div class="user-add-container">
-      <form class="user-add-form">
+      <form class="user-add-form" id="user-add-form">
         <label for="type">種類</label>
         <select id="type" name="type" required>
           <option value="customer">お店</option>
           <option value="seller">販売者</option>
         </select>
 
-        <label for="username">ユーザー名</label>
+        <label for="username">名前</label>
         <input type="text" id="username" name="username" required>
       
-        <label for="password">パスワード</label>
-        <input type="password" id="password" name="password" required>
-        
         <button type="submit" class="user-add-button">追加</button>
       </form>
     </div>

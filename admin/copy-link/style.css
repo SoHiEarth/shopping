@@ -1,0 +1,21 @@
+@import "../../font.css";
+@import "../../header.css";
+@import "../../globals.css";
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--primary-color);
+  background-color: var(--background-color);
+}
+
+.copy-link-container {
+  max-width: 450px;
+  margin: 40px auto;
+  padding: 30px 15px;
+  border: 1px solid var(--background-color-darker);
+  border-radius: var(--border-radius);
+  text-align: center;
+}

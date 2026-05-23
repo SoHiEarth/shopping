@@ -1,5 +1,6 @@
 @import "../font.css";
 @import "../header.css";
+@import "../globals.css";
 
 body {
   font-family: "Noto Sans JP", sans-serif;
@@ -43,25 +44,22 @@ body {
 .login-form input {
   padding: 0.5rem;
   border: 1px solid var(--primary-color);
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   font-size: 1rem;
 }
 
 .login-form button {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   background-color: var(--quaternary-color);
   color: var(--primary-color);
   cursor: pointer;
   font-size: 1rem;
+  margin-top: 2rem;
+  background-color: var(--background-color-darkest);
 }
 
 .login-form button:hover {
   background-color: var(--tertiary-color);
-}
-
-.login-form button {
-  margin-top: 2rem;
-  background-color: var(--background-color-darkest);
 }

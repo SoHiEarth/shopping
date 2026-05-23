@@ -11,30 +11,31 @@ body {
   background-color: var(--background-color);
 }
 
-.user-add-container {
+.add-item-container {
   padding: 2rem;
   max-width: 600px;
 }
 
-.user-add-form {
+.add-item-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.user-add-form label {
+.add-item-form label {
   font-weight: bold;
 }
 
-.user-add-form input,
-.user-add-form select {
+.add-item-form input,
+.add-item-form select,
+.add-item-form textarea {
   padding: 0.5rem;
   background-color: var(--background-color);
   border: 1px solid var(--background-color-darkest); 
   border-radius: var(--border-radius);
 }
 
-.user-add-form button {
+.add-item-form button {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: var(--border-radius);
@@ -44,11 +45,18 @@ body {
   font-size: 1rem;
 }
 
-.user-add-form button:hover {
+.add-item-form button:hover {
   background-color: var(--secondary-color);
 }
 
-.user-add-button {
+.add-item-button {
   margin-top: 2rem;
   background-color: var(--background-color-darkest);
+}
+
+/* Add some height to the info textbox */
+textarea.auto-grow {
+  field-sizing: content; /* Automatically grows to fit the typed text */
+  min-width: 300px;
+  min-height: 50px;
 }

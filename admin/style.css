@@ -1,5 +1,6 @@
 @import "../font.css";
 @import "../header.css";
+@import "../globals.css";
 
 body {
   font-family: "Noto Sans JP", sans-serif;
@@ -16,10 +17,17 @@ body {
 }
 
 .warning {
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   background-color: var(--warning-color);
   padding: 1rem;
   margin-bottom: 2rem;
+}
+
+.warning-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--secondary-color);
+  padding-bottom: 0.5rem;
 }
 
 .admin-tools {
@@ -38,7 +46,7 @@ body {
 .admin-button {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   background-color: var(--quaternary-color);
   color: var(--background-color);
   cursor: pointer;
@@ -59,14 +67,14 @@ body {
 }
 
 .table-container {
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   background-color: var(--background-color-dark);
   padding: 1rem;
 }
 
 .product-table {
   width: 100%;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   padding: 1rem;
   background-color: var(--background-color-darker);
   overflow-x: auto;
@@ -90,4 +98,5 @@ body {
 
 .product-table tbody tr:hover {
   background-color: var(--background-color-darkest);
+  cursor: pointer;
 }

@@ -13,14 +13,8 @@ body {
 
 .table-container {
   margin: 2rem;
+  border: 1px solid var(--background-color-dark);
   border-radius: var(--border-radius);
-  background-color: var(--background-color-dark);
-  padding: 1rem;
-}
-
-.table-container {
-  border-radius: var(--border-radius);
-  background-color: var(--background-color-dark);
   padding: 1rem;
 }
 
@@ -31,23 +25,12 @@ body {
   margin-bottom: 1rem;
 }
 
-#add-product {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: var(--border-radius);
-  background-color: var(--quaternary-color);
-  color: var(--background-color);
-  cursor: pointer;
-}
-
 .product-table {
   width: 100%;
   border-radius: var(--border-radius);
   padding: 1rem;
   background-color: var(--background-color-darker);
-  overflow-x: auto;
   border-collapse: collapse;
-  border-width: 0px;
 }
 
 .product-table th {
@@ -57,6 +40,10 @@ body {
 .product-table td, th {
   padding: 1rem 1rem;
   border: 0px;
+}
+
+.product-table tbody tr {
+  transition: background-color 0.3s ease;
 }
 
 /* Background color should oscillate between rows */

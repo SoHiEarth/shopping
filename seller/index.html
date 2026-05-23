@@ -8,16 +8,17 @@
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
     </style>
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js"></script>
 </head>
 <body>
     <header id="header">
         <h1 class="noto-sans-jp-bold">商品管理</h1>
-        <h1 class="noto-sans-jp-bold">ABC農業</h1>
+        <h1 class="noto-sans-jp-bold" id="username">ABC農業</h1>
     </header>
     <section class="table-container">
       <div class="tools">
         <h2 class="noto-sans-jp-bold">商品一覧</h2>
-        <button id="add-product" onclick="location.href='add-item/index.html'">商品追加</button>
+        <button id="add-product" class="button" onclick="location.href='add-item/index.html'">商品追加</button>
       </div>
       <table class="product-table">
         <thead>

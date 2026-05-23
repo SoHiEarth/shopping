@@ -13,7 +13,7 @@
 <body>
     <header id="header">
         <h1 class="noto-sans-jp-bold">商品一覧</h1>
-        <h1 class="noto-sans-jp-bold">ABC店</h1>
+        <h1 class="noto-sans-jp-bold" id="username"></h1>
     </header>
     <section class="grid-container">
         <div class="product-card" onclick="show_details('商品A')">
@@ -31,11 +31,11 @@
                     <button class="close-detail-button" onclick="close_details('商品A')">&times;</button>
                 </div>
                 <p id="product-description">美味しい野菜です。</p>
-                <label id="product-price-label" for="product-price">価格</label>
-                <input type="text" id="product-price" class="noto-sans-jp-bold" value="1000円" readonly>
-                <label for="quantity">数量</label>
-                <input type="number" class="quantity-input noto-sans-jp-bold" name="quantity" min="1" value="1">
-                <button id="add-to-cart-button" onclick="addToCart('商品A')">カートに追加</button>
+                <label id="product-price-label" class="label" for="product-price">価格</label>
+                <input type="text" id="product-price" class="noto-sans-jp-bold input-box" value="1000円" readonly>
+                <label for="quantity" class="label">数量</label>
+                <input type="number" class="noto-sans-jp-bold input-box" name="quantity" min="1" value="1">
+                <button class="button" onclick="addToCart('商品A')">カートに追加</button>
             </div>
         </div>
     
@@ -44,7 +44,7 @@
             <h2 class="noto-sans-jp-bold">商品B</h2>
             <p>新鮮な果物です。</p>
             <p>価格: 2000円</p>
-        </div> 
+        </div>
     
         <div class="product-card" onclick="show_details('商品C')">
             <img src="sample-image.png" alt="商品Cの画像" class="product-image">

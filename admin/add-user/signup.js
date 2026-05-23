@@ -2,7 +2,6 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabase = createClient('https://fqektoozvsosmqqraeog.supabase.co', 'sb_publishable_W1QJyDateNq-fU8wmBPRmw_2TFiSwBB')
 
 async function signUpNewUser() {
-  // Add a new user to the "users" table
   var username = document.getElementById('username').value
   var type = document.getElementById('type').value
   const { data, error } = await supabase

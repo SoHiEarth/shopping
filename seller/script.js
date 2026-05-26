@@ -53,7 +53,7 @@ async function loadProducts() {
     row.innerHTML = `
       <td>${escapeHtml(product.name)}</td>
       <td>${formatOrders(product.orders)}</td>
-      <td>${formatPrice(product.stock)}</td>
+      <td>${product.stock}</td>
     `;
     productList.appendChild(row);
   });

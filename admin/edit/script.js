@@ -1,0 +1,48 @@
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+const supabase = createClient('https://fqektoozvsosmqqraeog.supabase.co', 'sb_publishable_W1QJyDateNq-fU8wmBPRmw_2TFiSwBB')
+
+// extract product id from query string
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get('id');
+
+async function loadProduct() {
+    const { data: products, error } = await supabase.from('items').select('*');
+    if (error) {
+      console.error('Error fetching products:', error);
+      return;
+    }
+    
+    // get the product at the specified id
+    const product = products.find((p) => String(p.id) === String(productId));
+    if (!product) {
+      console.error('Product not found');
+      return;
+    }
+    const productNameDisplay = document.getElementById('product-name-display');
+    productNameDisplay.textContent = `${product.name}`;
+
+    // fill the form with the product data
+    document.getElementById('product-name').value = product.name || '';
+    document.getElementById('product-price').value = product.price || '';
+    document.getElementById('product-stock').value = product.stock || '';
+}
+
+async function updateProduct(event) {
+    event.preventDefault();
+    const name = document.getElementById('product-name').value;
+    const price = document.getElementById('product-price').value;
+    const stock = document.getElementById('product-stock').value;
+    const { data, error } = await supabase      .from('items')
+      .update({ name, price, stock })
+      .eq('id', productId);
+    if (error) {
+      console.error('Error updating product:', error);
+      alert('商品情報の更新に失敗しました。');
+    } else {
+      alert('商品情報を更新しました。');
+    }
+}
+
+document.getElementById('edit-form').addEventListener('submit', updateProduct);
+
+window.addEventListener('DOMContentLoaded', loadProduct);

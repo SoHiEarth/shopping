@@ -40,7 +40,6 @@ async function loadProducts() {
   }
   const productList = document.getElementById('product-table-body');
   products.forEach((product) => {
-    // if product price is null, add to warning list
     if (product.price === null) {
       const warningList = document.getElementById('warning-list');
       const warningItem = document.createElement('li');
@@ -50,25 +49,38 @@ async function loadProducts() {
         warningDisplayed = true;
       }
     }
+    // Create element with id set to supabase id
     const row = document.createElement('tr');
+    row.id = `product${product.id}`;
     row.innerHTML = `
+      <td>${escapeHtml(product.seller)}</td>
       <td>${escapeHtml(product.name)}</td>
       <td>${formatPrice(product.price)}</td>
       <td>${formatOrders(product.orders)}</td>
       <td>${product.stock}</td>
     `;
-    // if price is null, add alert class to the price cell
     if (product.price === null) {
       row.children[1].classList.add('alert');
     }
     productList.appendChild(row);
   });
-  // if there are no warnings, hide the warning section
   if (!warningDisplayed) {
     const warningContainer = document.getElementById('warning-container');
     warningContainer.style.display = 'none';
   }
 }
 
-// Load products when the page is loaded
+function openEditPage(productId) {
+  const url = `edit/index.html?id=${encodeURIComponent(productId)}`;
+  window.open(url, '_blank');
+}
+
 window.addEventListener('DOMContentLoaded', loadProducts);
+
+document.getElementById('product-table-body').addEventListener('click', (event) => {
+  const row = event.target.closest('tr');
+  if (row) {
+    const productId = row.id.replace('product', '');
+    openEditPage(productId);
+  }
+});

@@ -1,6 +1,45 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 const supabase = createClient('https://fqektoozvsosmqqraeog.supabase.co', 'sb_publishable_W1QJyDateNq-fU8wmBPRmw_2TFiSwBB')
 
+// Get token from URL
+const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get('token');
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+  return hashArray
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+async function validateToken() {
+  if (!token) {
+    window.location.href = '../login/index.html';
+    return false;
+  }
+
+  const hash = await sha256(token);
+  const { data, error } = await supabase
+    .from('tokens')
+    .select('id')
+    .eq('hash', hash)
+    .single();
+
+  if (error || !data) {
+    window.location.href = '../login/index.html';
+    return false;
+  }
+
+  localStorage.setItem('adminToken', token);
+
+  return true;
+}
+
+validateToken();
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll('&', '&amp;')

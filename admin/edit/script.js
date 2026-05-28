@@ -1,5 +1,4 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-const supabase = createClient('https://fqektoozvsosmqqraeog.supabase.co', 'sb_publishable_W1QJyDateNq-fU8wmBPRmw_2TFiSwBB')
+import { supabase } from '../../module.js'
 
 // extract product id from query string
 const urlParams = new URLSearchParams(window.location.search);
@@ -43,6 +42,17 @@ async function updateProduct(event) {
     }
 }
 
-document.getElementById('edit-form').addEventListener('submit', updateProduct);
+  function initializeEditPage() {
+    const editForm = document.getElementById('edit-form');
+    if (editForm) {
+      editForm.addEventListener('submit', updateProduct);
+    }
 
-window.addEventListener('DOMContentLoaded', loadProduct);
+    loadProduct();
+  }
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initializeEditPage, { once: true });
+  } else {
+    initializeEditPage();
+  }

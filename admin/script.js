@@ -1,5 +1,4 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-const supabase = createClient('https://fqektoozvsosmqqraeog.supabase.co', 'sb_publishable_W1QJyDateNq-fU8wmBPRmw_2TFiSwBB')
+import { escapeHtml, formatOrders, formatPrice, supabase } from '../module.js'
 
 // Get token from URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -36,37 +35,6 @@ async function validateToken() {
   localStorage.setItem('adminToken', token);
 
   return true;
-}
-
-validateToken();
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function formatPrice(value) {
-  if (value === null || value === undefined || value === '') {
-    return '価格未設定';
-  }
-  if (typeof value === 'number') {
-    return `${value.toLocaleString('ja-JP')}円`;
-  }
-  const text = String(value);
-  return text.includes('円') ? text : `${text}円`;
-}
-
-function formatOrders(value) {
-  if (value === null || value === undefined || value === '') {
-    return '0';
-  }
-  if (typeof value === 'number') {
-    return `${value}`;
-  }
 }
 
 // Retrieve items from the database and display them in the admin interface
@@ -114,12 +82,30 @@ function openEditPage(productId) {
   window.open(url, '_blank');
 }
 
-window.addEventListener('DOMContentLoaded', loadProducts);
-
-document.getElementById('product-table-body').addEventListener('click', (event) => {
-  const row = event.target.closest('tr');
-  if (row) {
-    const productId = row.id.replace('product', '');
-    openEditPage(productId);
+async function initializeAdminDashboard() {
+  const isTokenValid = await validateToken();
+  if (!isTokenValid) {
+    return;
   }
-});
+
+  await loadProducts();
+
+  const productTableBody = document.getElementById('product-table-body');
+  if (productTableBody) {
+    productTableBody.addEventListener('click', (event) => {
+      const row = event.target.closest('tr');
+      if (row) {
+        const productId = row.id.replace('product', '');
+        openEditPage(productId);
+      }
+    });
+  }
+}
+
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', () => {
+    initializeAdminDashboard();
+  }, { once: true });
+} else {
+  initializeAdminDashboard();
+}

@@ -1,52 +1,27 @@
-// Parse the username from the URL query parameters
-const urlParams = new URLSearchParams(window.location.search);
-const username = urlParams.get('username');
+import { ensureAnonymousSession, escapeHtml, formatOrders, setHeaderUsername, supabase } from '../module.js'
 
-// Display the username in the header
-if (username) {
-  document.getElementById('username').textContent = username + 'さん';
-} else {
-  document.getElementById('username').textContent = 'ゲストさん';
+const anonymousSession = await ensureAnonymousSession()
+if (anonymousSession?.user?.id) {
+  console.log('Anonymous session ready with user ID:', anonymousSession.user.id)
 }
 
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-const supabase = createClient('https://fqektoozvsosmqqraeog.supabase.co', 'sb_publishable_W1QJyDateNq-fU8wmBPRmw_2TFiSwBB')
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function formatPrice(value) {
-  if (value === null || value === undefined || value === '') {
-    return '価格未設定';
-  }
-  if (typeof value === 'number') {
-    return `${value.toLocaleString('ja-JP')}円`;
-  }
-  const text = String(value);
-  return text.includes('円') ? text : `${text}円`;
-}
-
-function formatOrders(value) {
-  if (value === null || value === undefined || value === '') {
-    return '0';
-  }
-  if (typeof value === 'number') {
-    return `${value}`;
-  }
-}
+setHeaderUsername('username', 'ゲストさん');
 
 async function loadProducts() {
+  const session = await ensureAnonymousSession();
+  if (!session?.user?.id) {
+    console.error('Anonymous session could not be established before loading seller products.');
+  }
+
   const { data: products, error } = await supabase.from('items').select('*');
   if (error) {
     console.error('Error fetching products:', error);
     return;
+  } else if (!products) {
+    console.warn('No products found in the database.');
+    return;
   }
+  
   const productList = document.getElementById('product-table-body');
   products.forEach((product) => {
     const row = document.createElement('tr');
@@ -59,5 +34,20 @@ async function loadProducts() {
   });
 }
 
-// Load products when the page is loaded
-window.addEventListener('DOMContentLoaded', loadProducts);
+function initializeSellerDashboard() {
+  setHeaderUsername('username', 'ゲストさん');
+  loadProducts();
+
+  const addProductButton = document.getElementById('add-product');
+  if (addProductButton) {
+    addProductButton.addEventListener('click', () => {
+      window.location.href = 'add-item/index.html?username=' + encodeURIComponent(new URLSearchParams(window.location.search).get('username') || '');
+    });
+  }
+}
+
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', initializeSellerDashboard, { once: true });
+} else {
+  initializeSellerDashboard();
+}

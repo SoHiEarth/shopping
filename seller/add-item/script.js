@@ -1,16 +1,14 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-const supabase = createClient('https://fqektoozvsosmqqraeog.supabase.co', 'sb_publishable_W1QJyDateNq-fU8wmBPRmw_2TFiSwBB')
+import { ensureAnonymousSession, setHeaderUsername, supabase } from '../../module.js'
 
-// Parse the username from the URL query parameters
+const anonymousSession = await ensureAnonymousSession()
+if (anonymousSession?.user?.id) {
+    console.log('Anonymous session ready with user ID:', anonymousSession.user.id)
+}
+
+setHeaderUsername('username', 'ゲストさん');
+
 const urlParams = new URLSearchParams(window.location.search);
 const username = urlParams.get('username');
-
-// Display the username in the header
-if (username) {
-    document.getElementById('username').textContent = username + 'さん';
-} else {
-    document.getElementById('username').textContent = 'ゲストさん';
-}
 
 async function addItem() {
     var itemName = document.getElementById('item-name').value;
@@ -30,7 +28,20 @@ async function addItem() {
     }
 }
 
-document.getElementById('add-item-form').addEventListener('submit', (event) => {
-    event.preventDefault();
-    addItem();
-});
+function initializeAddItemPage() {
+    setHeaderUsername('username', 'ゲストさん');
+
+    const addItemForm = document.getElementById('add-item-form');
+    if (addItemForm) {
+        addItemForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            addItem();
+        });
+    }
+}
+
+if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initializeAddItemPage, { once: true });
+} else {
+    initializeAddItemPage();
+}

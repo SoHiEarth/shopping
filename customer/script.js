@@ -1,36 +1,15 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-const supabase = createClient('https://fqektoozvsosmqqraeog.supabase.co', 'sb_publishable_W1QJyDateNq-fU8wmBPRmw_2TFiSwBB')
+import { ensureAnonymousSession, escapeHtml, formatPrice, setHeaderUsername, supabase } from '../module.js'
 
-const urlParams = new URLSearchParams(window.location.search);
-const username = urlParams.get('username') || 'ゲスト';
+const anonymousSession = await ensureAnonymousSession();
+if (anonymousSession?.user?.id) {
+    console.log('Anonymous session ready with user ID:', anonymousSession.user.id);
+}
 
 const state = {
     products: [],
     cartByKey: new Map(),
     cartTotal: 0,
 };
-
-function escapeHtml(value) {
-    return String(value)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-}
-
-function formatPrice(value) {
-    if (value === null || value === undefined || value === '') {
-        return '価格未設定';
-    }
-
-    if (typeof value === 'number') {
-        return `${value.toLocaleString('ja-JP')}円`;
-    }
-
-    const text = String(value);
-    return text.includes('円') ? text : `${text}円`;
-}
 
 function parsePrice(value) {
     if (typeof value === 'number') {
@@ -151,6 +130,11 @@ function renderProducts(products) {
 }
 
 async function loadProducts() {
+    const session = await ensureAnonymousSession();
+    if (!session?.user?.id) {
+        console.error('Anonymous session could not be established before loading customer products.');
+    }
+
     const { data, error } = await supabase
         .from('items')
         .select('*');
@@ -205,11 +189,13 @@ window.show_details = show_details;
 window.close_details = close_details;
 window.addToCart = addToCart;
 
-window.addEventListener('DOMContentLoaded', () => {
-    const usernameElement = document.getElementById('username');
-    if (usernameElement) {
-        usernameElement.textContent = `${username}さん`;
-    }
-
+function initializeCustomerDashboard() {
+    setHeaderUsername('username', 'ゲストさん');
     loadProducts();
-});
+}
+
+if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initializeCustomerDashboard, { once: true });
+} else {
+    initializeCustomerDashboard();
+}

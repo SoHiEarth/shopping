@@ -31,5 +31,21 @@
         <tbody id="product-table-body"></tbody>
       </table>
     </div>
+    <div id="product-details-modal">
+      <div class="modal-content">
+        <span id="close-button">&times;</span>
+        <form id="product-details-form">
+          <label for="product-name" class="label">商品名</label>
+          <input type="text" id="product-name" class="input-box">
+          <label for="order-count" class="label">注文数</label>
+          <input type="number" id="order-count" class="input-box" min="0">
+          <label for="stock-input" class="label">在庫数</label>
+          <input type="number" id="stock-input" class="input-box" min="0">
+          <label for="description-input" class="label">一言</label>
+          <textarea id="description-input" class="input-box" rows="4"></textarea>
+        </form>
+        <button type="submit" id="submit-button" class="button">更新する</button>
+      </div>
+    </div>
 </body>
 </html>

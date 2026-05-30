@@ -64,6 +64,12 @@ export function formatOrders(value) {
 export function setHeaderUsername(elementId = 'username', fallbackName = 'ゲストさん') {
 	const urlParams = new URLSearchParams(window.location.search);
 	const username = urlParams.get('username');
+
+	if (!username) {
+    // Go to login page if username is not provided
+    window.location.href = '/login';
+	}
+
 	const usernameElement = document.getElementById(elementId);
 
 	if (!usernameElement) {

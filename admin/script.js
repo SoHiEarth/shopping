@@ -1,4 +1,4 @@
-import { escapeHtml, formatOrders, formatPrice, supabase } from '../module.js'
+import { escapeHtml, formatPrice, supabase } from '../module.js'
 
 // Get token from URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -39,6 +39,33 @@ async function validateToken() {
 
 // Retrieve items from the database and display them in the admin interface
 let warningDisplayed = false;
+
+function parseOrderEntry(entry) {
+  const trimmedEntry = String(entry ?? '').trim();
+  if (!trimmedEntry || !trimmedEntry.includes(':')) {
+    return null;
+  }
+
+  const [customerName, quantityText] = trimmedEntry.split(':');
+  const quantity = Number.parseInt(quantityText, 10);
+
+  if (!customerName || !Number.isFinite(quantity) || quantity <= 0) {
+    return null;
+  }
+
+  return {
+    customerName: customerName.trim(),
+    quantity,
+  };
+}
+
+function getTotalOrderCount(orders) {
+  return String(orders ?? '')
+    .split(/\r?\n/)
+    .map(parseOrderEntry)
+    .reduce((sum, order) => sum + (order?.quantity ?? 0), 0);
+}
+
 async function loadProducts() {
   const { data: products, error } = await supabase.from('items').select('*');
   if (error) {
@@ -63,7 +90,7 @@ async function loadProducts() {
       <td>${escapeHtml(product.seller)}</td>
       <td>${escapeHtml(product.name)}</td>
       <td>${formatPrice(product.price)}</td>
-      <td>${formatOrders(product.orders)}</td>
+      <td>${getTotalOrderCount(product.orders)}</td>
       <td>${product.stock}</td>
     `;
     if (product.price === null) {

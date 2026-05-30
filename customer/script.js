@@ -11,6 +11,11 @@ const state = {
     cartTotal: 0,
 };
 
+function getCustomerName() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('username') ?? 'ゲストさん';
+}
+
 function parsePrice(value) {
     if (typeof value === 'number') {
         return value;
@@ -55,6 +60,68 @@ function updateCartOverview() {
     }
 }
 
+function getOrderLimitLabel(stock) {
+    if (!Number.isFinite(stock)) {
+        return '在庫数が不明です。';
+    }
+
+    return `${stock}個まで注文できます。`;
+}
+
+function parseOrderEntry(entry) {
+    const trimmedEntry = String(entry ?? '').trim();
+    if (!trimmedEntry || !trimmedEntry.includes(':')) {
+        return null;
+    }
+
+    const [customerName, quantityText] = trimmedEntry.split(':');
+    const quantity = Number.parseInt(quantityText, 10);
+
+    if (!customerName || !Number.isFinite(quantity) || quantity <= 0) {
+        return null;
+    }
+
+    return {
+        customerName: customerName.trim(),
+        quantity,
+    };
+}
+
+function countOrderedQuantity(orders) {
+    return String(orders ?? '')
+        .split(/\r?\n/)
+        .map(parseOrderEntry)
+        .reduce((sum, order) => sum + (order?.quantity ?? 0), 0);
+}
+
+function getRemainingStock(product) {
+    const stock = Number(product?.stock ?? product?.quantity ?? product?.inventory ?? Infinity);
+    if (!Number.isFinite(stock)) {
+        return Infinity;
+    }
+
+    return Math.max(0, stock - countOrderedQuantity(product?.orders));
+}
+
+function updateDetailCardLimit(productKey, remainingStock) {
+    const detailCard = getDetailCard(productKey);
+    if (!detailCard) {
+        return;
+    }
+
+    const quantityInput = detailCard.querySelector('.quantity-input');
+    const orderLimitLabel = detailCard.querySelector('.order-limit-label');
+
+    if (quantityInput) {
+        quantityInput.max = Number.isFinite(remainingStock) ? String(remainingStock) : '';
+        quantityInput.value = '1';
+    }
+
+    if (orderLimitLabel) {
+        orderLimitLabel.textContent = getOrderLimitLabel(remainingStock);
+    }
+}
+
 function renderProducts(products) {
     const productGrid = document.querySelector('.grid-container');
     if (!productGrid) {
@@ -72,11 +139,13 @@ function renderProducts(products) {
         const hasPriceSet = rawPrice !== null && rawPrice !== undefined && rawPrice !== '';
         const productPrice = parsePrice(rawPrice ?? 0);
         const productPriceLabel = formatPrice(rawPrice);
+        const stock = getRemainingStock(product);
 
         state.cartByKey.set(productKey, {
             productName,
             productPrice,
             hasPriceSet,
+            stock,
         });
 
         const productCard = document.createElement('div');
@@ -104,7 +173,8 @@ function renderProducts(products) {
                 <label class="label">価格</label>
                 <input type="text" class="noto-sans-jp-bold input-box" value="${escapeHtml(productPriceLabel)}" readonly>
                 <label for="quantity-${escapeHtml(productKey)}" class="label">数量</label>
-                <input type="number" class="noto-sans-jp-bold input-box quantity-input" id="quantity-${escapeHtml(productKey)}" min="1" value="1">
+                <p class="label order-limit-label">${escapeHtml(getOrderLimitLabel(stock))}</p>
+                <input type="number" class="noto-sans-jp-bold input-box quantity-input" id="quantity-${escapeHtml(productKey)}" min="1" ${Number.isFinite(stock) ? `max="${stock}"` : ''} value="1">
                 <button class="button add-to-cart-button" type="button">カートに追加</button>
             </div>
         `;
@@ -167,7 +237,7 @@ function close_details(productKey) {
     }
 }
 
-function addToCart(productKey) {
+async function addToCart(productKey) {
     const cartItem = state.cartByKey.get(productKey);
     if (!cartItem || !cartItem.hasPriceSet) {
         alert('この商品はまだ価格未設定のため、カートに追加できません。');
@@ -177,7 +247,36 @@ function addToCart(productKey) {
     const detailCard = getDetailCard(productKey);
     const quantityInput = detailCard ? detailCard.querySelector('.quantity-input') : null;
     const quantity = quantityInput ? Math.max(1, parseInt(quantityInput.value, 10) || 1) : 1;
+    const product = state.products.find((item, index) => getProductKey(item, index) === productKey);
+    const stock = getRemainingStock(product) ?? cartItem.stock;
+
+    if (Number.isFinite(stock) && quantity > stock) {
+        alert(`申し訳ありませんが、在庫数を超える数量は選択できません。在庫数: ${stock}`);
+        return;
+    }
     const itemTotal = (cartItem?.productPrice ?? 0) * quantity;
+    const customerName = getCustomerName();
+
+    if (product?.id !== undefined && product?.id !== null) {
+        const orderEntry = `${customerName}:${quantity}`;
+        const nextOrders = product.orders ? `${product.orders}\n${orderEntry}` : orderEntry;
+
+        const { error } = await supabase
+            .from('items')
+            .update({ orders: nextOrders })
+            .eq('id', product.id);
+
+        if (error) {
+            console.error('Error updating orders column:', error);
+            alert('注文情報の保存に失敗しました。');
+            return;
+        }
+
+        product.orders = nextOrders;
+        const remainingStock = getRemainingStock(product);
+        cartItem.stock = remainingStock;
+        updateDetailCardLimit(productKey, remainingStock);
+    }
 
     state.cartTotal += itemTotal;
     updateCartOverview();

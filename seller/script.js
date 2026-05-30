@@ -22,6 +22,32 @@ const closeButton = document.getElementById('close-button');
 const submitButton = document.getElementById('submit-button');
 const productTableBody = document.getElementById('product-table-body');
 
+function parseOrderEntry(entry) {
+  const trimmedEntry = String(entry ?? '').trim();
+  if (!trimmedEntry || !trimmedEntry.includes(':')) {
+    return null;
+  }
+
+  const [customerName, quantityText] = trimmedEntry.split(':');
+  const quantity = Number.parseInt(quantityText, 10);
+
+  if (!customerName || !Number.isFinite(quantity) || quantity <= 0) {
+    return null;
+  }
+
+  return {
+    customerName: customerName.trim(),
+    quantity,
+  };
+}
+
+function getTotalOrderCount(orders) {
+  return String(orders ?? '')
+    .split(/\r?\n/)
+    .map(parseOrderEntry)
+    .reduce((sum, order) => sum + (order?.quantity ?? 0), 0);
+}
+
 async function initializeSession() {
   const session = await ensureAnonymousSession();
 
@@ -58,8 +84,8 @@ async function loadProducts() {
 
       row.innerHTML = `
         <td>${escapeHtml(product.name)}</td>
-        <td>${formatOrders(product.orders)}</td>
-        <td>${product.stock}</td>
+        <td>${getTotalOrderCount(product.orders)}</td>
+        <td>${Number(product.stock) || 0}</td>
       `;
 
       row.style.cursor = 'pointer';
@@ -84,9 +110,12 @@ async function openProductModal(productId) {
   }
 
   nameInput.value = data.name ?? '';
-  orderInput.value = data.orders ?? 0;
+  orderInput.value = getTotalOrderCount(data.orders);
+  
+  stockInput.value = Number(data.stock) || 0;
+
   orderInput.readOnly = true;
-  stockInput.value = data.stock ?? 0;
+
   descInput.value = data.description ?? '';
 
   modal.style.display = 'flex';

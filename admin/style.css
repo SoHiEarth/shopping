@@ -11,6 +11,10 @@ body {
   background-color: var(--background-color);
 }
 
+a {
+  text-decoration: none !important;
+}
+
 .alert {
   color: var(--alert-color);
   font-weight: bold;
@@ -19,7 +23,7 @@ body {
 .warning {
   border-radius: var(--border-radius);
   background-color: var(--warning-color);
-  padding: 1rem;
+  padding: var(--element-padding);
   margin-bottom: 2rem;
 }
 

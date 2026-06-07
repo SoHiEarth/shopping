@@ -1,6 +1,6 @@
 import { escapeHtml, formatPrice, supabase } from '../module.js'
 
-// Get token from URL
+let warningDisplayed = false;
 const urlParams = new URLSearchParams(window.location.search);
 const token = urlParams.get('token');
 
@@ -8,7 +8,6 @@ async function sha256(message) {
   const msgBuffer = new TextEncoder().encode(message);
   const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-
   return hashArray
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
@@ -33,12 +32,8 @@ async function validateToken() {
   }
 
   localStorage.setItem('adminToken', token);
-
   return true;
 }
-
-// Retrieve items from the database and display them in the admin interface
-let warningDisplayed = false;
 
 function parseOrderEntry(entry) {
   const trimmedEntry = String(entry ?? '').trim();
@@ -83,7 +78,7 @@ async function loadProducts() {
         warningDisplayed = true;
       }
     }
-    // Create element with id set to supabase id
+    
     const row = document.createElement('tr');
     row.id = `product${product.id}`;
     row.innerHTML = `
@@ -114,9 +109,8 @@ async function initializeAdminDashboard() {
   if (!isTokenValid) {
     return;
   }
-
+  
   await loadProducts();
-
   const productTableBody = document.getElementById('product-table-body');
   if (productTableBody) {
     productTableBody.addEventListener('click', (event) => {

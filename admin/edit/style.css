@@ -12,14 +12,14 @@ body {
 }
 
 .container {  
-  padding: 2rem;
+  padding: var(--container-padding);
   max-width: 600px;
 }
 
 .warning {
   border-radius: var(--border-radius);
   background-color: var(--warning-color);
-  padding: 1rem;
+  padding: var(--element-padding);
   margin-bottom: 2rem;
 }
 

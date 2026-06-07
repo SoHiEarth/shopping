@@ -1,25 +1,25 @@
-<!DOCTYPE html>
-<html lang="jp">
-<head>
+<!doctype html>
+<html lang="ja">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理画面</title>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap");
     </style>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="script.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <header id="header">
       <h1 class="noto-sans-jp-bold">管理画面</h1>
       <div class="admin-tools">
-        <button class="noto-sans-jp-bold button" onclick="location.href='add-user/index.html'">ユーザー追加</button>
-        <button class="noto-sans-jp-bold button">注文管理</button>
+        <a class="noto-sans-jp-bold button" href="/admin/add-user/">ユーザー追加</a>
+        <!-- <button class="noto-sans-jp-bold button">注文管理</button> -->
       </div>
     </header>
     <div class="admin-container">
-      <section id="warning-container"class="warning">
+      <section id="warning-container" class="warning">
         <h2 class="noto-sans-jp-bold warning-title">警告</h2>
         <p>以下の商品の価格が未設定です。</p>
         <ul id="warning-list"></ul>
@@ -37,9 +37,9 @@
               <th>在庫数</th>
             </tr>
           </thead>
-          <tbody id="product-table-body"/>
+          <tbody id="product-table-body"></tbody>
         </table>
       </section>
     </div>
-    </body>
+  </body>
 </html>

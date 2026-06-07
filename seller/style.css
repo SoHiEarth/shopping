@@ -15,7 +15,7 @@ body {
   margin: 2rem;
   border: 1px solid var(--background-color-dark);
   border-radius: var(--border-radius);
-  padding: 1rem;
+  padding: var(--container-padding);
 }
 
 .tools {
@@ -28,7 +28,7 @@ body {
 .product-table {
   width: 100%;
   border-radius: var(--border-radius);
-  padding: 1rem;
+  padding: var(--container-padding);
   background-color: var(--background-color-darker);
   border-collapse: collapse;
 }
@@ -38,12 +38,12 @@ body {
 }
 
 .product-table td, th {
-  padding: 1rem 1rem;
+  padding: 1rem;
   border: 0px;
 }
 
 .product-table tbody tr {
-  transition: background-color 0.3s ease;
+  transition: background-color var(--transition-duration) ease;
   cursor: pointer;
 }
 
@@ -77,7 +77,7 @@ body {
 
 .modal-content {
   background-color: var(--background-color);
-  padding: 2rem;
+  padding: var(--container-padding);
   border-radius: var(--border-radius);
   width: 400px;
   max-width: 90%;

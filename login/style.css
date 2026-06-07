@@ -21,7 +21,7 @@ body {
   background-position: center;
   z-index: -1;
   /* lower brigthness and blur the image */
-  filter: brightness(0.6) blur(30px);
+  filter: brightness(0.6) blur(70px);
 }
 
 .login-form {
@@ -29,7 +29,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 2rem;
+  padding: var(--element-padding);
   display: flex;
   flex-direction: column;
   gap: 1rem;

@@ -8,12 +8,6 @@ async function signUpNewUser() {
     .insert([
       { username: username, type: type },
     ])
-
-  if (error) {
-    console.error('Error adding user:', error)
-  } else {
-    console.log('User added successfully:', data)
-  }
 }
 
 document.getElementById('user-add-form').addEventListener('submit', (event) => {

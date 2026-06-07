@@ -78,7 +78,6 @@ body {
 }
 
 .product-detail-image {
-  /* Height should preserve aspect ratio, but if the image is too tall we should change width to auto and height to 100% */
   object-fit: cover;
   width: 100%;
   margin: 20px;
@@ -111,7 +110,6 @@ body {
   border-radius: var(--border-radius);
 }
 
-/* Place at the bottom-center of the page */
 #cart-overview {
   position: fixed;
   bottom: 20px;
@@ -132,15 +130,12 @@ body {
   border: none;
 }
 
-/* Should be same height as the text */
-/* cart icon should "jump" when hovered */
 .cart-icon {
   width: 35px;
   height: 35px;
   transition: transform 0.3s ease;
 }
 
-/* On dark mode, make the cart icon white */
 @media (prefers-color-scheme: dark) {
   .cart-icon {
     filter: invert(1);

@@ -12,12 +12,12 @@ body {
 }
 
 .add-item-container {
-  padding: 2rem;
+  padding: var(--container-padding);
   max-width: 600px;
 }
 
 .add-item-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--element-padding);
 }

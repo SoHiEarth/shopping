@@ -3,7 +3,6 @@ import { supabase } from '../module.js'
 function redirectFromRefUsername() {
   const urlParams = new URLSearchParams(window.location.search);
   const refUsername = urlParams.get('ref');
-
   if (!refUsername) {
     return;
   }

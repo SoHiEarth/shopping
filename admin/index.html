@@ -15,31 +15,30 @@
       <h1 class="noto-sans-jp-bold">管理画面</h1>
       <div class="admin-tools">
         <a class="noto-sans-jp-bold button" href="/admin/add-user/">ユーザー追加</a>
+        <a id="orders-link" class="noto-sans-jp-bold button">注文管理</a>
         <!-- <button class="noto-sans-jp-bold button">注文管理</button> -->
       </div>
     </header>
     <div class="admin-container">
-      <section id="warning-container" class="warning">
+      <section id="warning-container" class="warning" hidden>
         <h2 class="noto-sans-jp-bold warning-title">警告</h2>
         <p>以下の商品の価格が未設定です。</p>
         <ul id="warning-list"></ul>
         <p>早急に設定してください。</p>
       </section>
-      <section class="table-container">
-        <h2 class="noto-sans-jp-bold">商品一覧</h2>
-        <table class="product-table">
-          <thead>
-            <tr>
-              <th>販売者</th>
-              <th>商品名</th>
-              <th>価格</th>
-              <th>注文数</th>
-              <th>在庫数</th>
-            </tr>
-          </thead>
-          <tbody id="product-table-body"></tbody>
-        </table>
-      </section>
+      <h2 class="noto-sans-jp-bold">商品一覧</h2>
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>販売者</th>
+            <th>商品名</th>
+            <th>価格</th>
+            <th>注文数</th>
+            <th>在庫数</th>
+          </tr>
+        </thead>
+        <tbody id="product-table-body"></tbody>
+      </table>
     </div>
   </body>
 </html>

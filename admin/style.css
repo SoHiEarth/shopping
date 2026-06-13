@@ -57,12 +57,6 @@ a {
   }
 }
 
-.table-container {
-  border-radius: var(--border-radius);
-  background-color: var(--background-color-dark);
-  padding: 1rem;
-}
-
 .product-table {
   width: 100%;
   border-radius: var(--border-radius);
@@ -94,4 +88,13 @@ a {
 .product-table tbody tr:hover {
   background-color: var(--background-color-darkest);
   cursor: pointer;
+}
+
+/* The last row should have a border radius at the bottom */
+.product-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: var(--border-radius);
+}
+
+.orders-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: var(--border-radius);
 }

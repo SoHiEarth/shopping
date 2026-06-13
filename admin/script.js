@@ -67,13 +67,21 @@ async function loadProducts() {
     console.error('Error fetching products:', error);
     return;
   }
+
+  const warningContainer = document.getElementById('warning-container');
+  const warningList = document.getElementById('warning-list');
   const productList = document.getElementById('product-table-body');
+  if (warningList) {
+    warningList.innerHTML = '';
+  }
+
+  warningDisplayed = false;
+
   products.forEach((product) => {
     if (product.price === null) {
-      const warningList = document.getElementById('warning-list');
       const warningItem = document.createElement('li');
       warningItem.textContent = product.name;
-      warningList.appendChild(warningItem);
+      warningList?.appendChild(warningItem);
       if (!warningDisplayed) {
         warningDisplayed = true;
       }
@@ -93,9 +101,9 @@ async function loadProducts() {
     }
     productList.appendChild(row);
   });
-  if (!warningDisplayed) {
-    const warningContainer = document.getElementById('warning-container');
-    warningContainer.style.display = 'none';
+
+  if (warningContainer) {
+    warningContainer.hidden = !warningDisplayed;
   }
 }
 
@@ -129,4 +137,13 @@ if (document.readyState === 'loading') {
   }, { once: true });
 } else {
   initializeAdminDashboard();
+}
+
+// orders-link should also pass token to the orders list page
+const ordersLink = document.getElementById('orders-link');
+if (ordersLink) {
+  ordersLink.addEventListener('click', () => {
+    const url = `orders-list/index.html?token=${encodeURIComponent(token)}`;
+    window.location.href = url;
+  });
 }

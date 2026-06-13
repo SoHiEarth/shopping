@@ -19,6 +19,12 @@ async function loadProduct() {
   document.getElementById('product-name').value = product.name || '';
   document.getElementById('product-price').value = product.price || '';
   document.getElementById('product-stock').value = product.stock || '';
+
+  // if price is null, show warning
+  if (product.price === null) {
+    const warning = document.getElementById('warning-container');
+    warning.style.display = 'inline';
+  }
 }
 
 async function updateProduct(event) {
@@ -34,6 +40,8 @@ async function updateProduct(event) {
     alert('商品情報の更新に失敗しました。');
   } else {
     alert('商品情報を更新しました。');
+    // reload the page to reflect the updated data
+    reloadPage();
   }
 }
 

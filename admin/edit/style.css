@@ -16,7 +16,11 @@ body {
   max-width: 600px;
 }
 
-.warning {
+#warning-container {
+  display: none;
+}
+
+#warning {
   border-radius: var(--border-radius);
   background-color: var(--warning-color);
   padding: var(--element-padding);
@@ -34,4 +38,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  #product-name-display {
+    display: none;
+  }
 }

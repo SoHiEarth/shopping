@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理画面</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap");
+    </style>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js"></script>
+  </head>
+  <body>
+    <header id="header">
+      <h1 class="noto-sans-jp-bold">注文管理</h1>
+    </header>
+    <div class="admin-container">
+      <section id="warning-container" class="warning" hidden>
+        <h2 class="noto-sans-jp-bold warning-title">警告</h2>
+        <p>以下の商品の価格が未設定です。</p>
+        <ul id="warning-list"></ul>
+        <p>早急に設定してください。</p>
+      </section>
+      <section class="sort-tools-container">
+        <h2 class="noto-sans-jp-bold">並び替え</h2>
+        <div class="sort-tools">
+          <button id="sort-by-name" class="noto-sans-jp-bold button">商品名</button>
+          <button id="sort-by-price" class="noto-sans-jp-bold button">価格</button>
+          <button id="sort-by-total-orders" class="noto-sans-jp-bold button">総注文数</button>
+          <button id="sort-by-total-price" class="noto-sans-jp-bold button">総価格</button>
+        </div>
+      </section>
+      <div class="orders-table-scroll">
+        <table class="orders-table">
+          <thead>
+            <tr id="customer-names">
+              <th>販売者</th>
+              <!-- Add customer names from here via script -->
+            </tr>
+          </thead>
+          <!-- Seller Name | (Order count by each customer), handled by script-->
+          <tbody id="orders-table-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,195 @@
+@import "../../font.css";
+@import "../../header.css";
+@import "../../globals.css";
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--primary-color);
+  background-color: var(--background-color);
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.alert {
+  color: var(--alert-color);
+  font-weight: bold;
+}
+
+/* Animate warning when it appears */
+
+.warning {
+  border-radius: var(--border-radius);
+  background-color: var(--warning-color);
+  padding: var(--element-padding);
+  margin-bottom: 2rem;
+  animation: ease-in-out 0.5s fadeIn;
+}
+
+.warning-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--secondary-color);
+  padding-bottom: 0.5rem;
+}
+
+.admin-tools {
+  justify-content: right;
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 0rem;
+}
+
+@media (max-width: 600px) {
+  .admin-tools {
+    justify-content: center;
+  }
+}
+
+.admin-container {
+  padding: 2rem;
+}
+
+@media (max-width: 600px) {
+  .admin-container {
+    padding: 0.5rem;
+  }
+}
+
+.sort-tools-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sort-tools {
+  display: flex;
+  gap: 1rem;
+}
+
+.sort-tools .button[data-active="true"] {
+  background-color: var(--secondary-color);
+  color: var(--background-color);
+}
+
+.orders-table-scroll {
+  overflow-x: auto;
+  position: relative;
+  border-radius: var(--border-radius);
+}
+
+.orders-table {
+  --sticky-col-width: 10vw;
+  width: max-content;
+  min-width: 100%;
+  border-radius: var(--border-radius);
+  background-color: var(--background-color-darker);
+  border-collapse: collapse;
+  border-width: 0px;
+}
+
+.orders-table th {
+  text-align: left;
+}
+
+.orders-table td,
+.orders-table th {
+  padding: 1rem 1rem;
+  border: 0px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.orders-table .col-seller,
+.orders-table .col-product,
+.orders-table .col-price {
+  box-sizing: border-box;
+  width: var(--sticky-col-width);
+  min-width: var(--sticky-col-width);
+  max-width: var(--sticky-col-width);
+}
+
+/* Background color should oscillate between rows */
+.orders-table tbody tr:nth-child(odd) {
+  background-color: var(--background-color-dark);
+}
+
+/* The last row should have a border radius at the bottom */
+.orders-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: var(--border-radius);
+}
+.orders-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: var(--border-radius);
+}
+
+.orders-table .col-seller {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background-color: var(--background-color-darker);
+}
+
+.orders-table .col-product {
+  position: sticky;
+  left: calc(var(--sticky-col-width));
+  z-index: 4;
+  background-color: var(--background-color-darker);
+}
+
+.orders-table .col-price {
+  position: sticky;
+  left: calc(var(--sticky-col-width) * 2);
+  z-index: 5;
+  background-color: var(--background-color-darker);
+  box-shadow: 2px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+.col-price::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 1px;
+  height: 100%;
+  background: rgba(255,255,255,.15);
+}
+
+.orders-table tbody .col-seller,
+.orders-table tbody .col-product,
+.orders-table tbody .col-price {
+  background-clip: padding-box;
+}
+
+.orders-table tbody tr:nth-child(odd) .col-seller,
+.orders-table tbody tr:nth-child(odd) .col-product,
+.orders-table tbody tr:nth-child(odd) .col-price {
+  background-color: var(--background-color-dark);
+}
+
+.orders-table tbody .col-seller,
+.orders-table tbody .col-product,
+.orders-table tbody .col-price,
+.orders-table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.orders-table tbody tr:hover .col-seller,
+.orders-table tbody tr:hover .col-product,
+.orders-table tbody tr:hover .col-price,
+.orders-table tbody tr:hover {
+  background-color: var(--background-color-darkest);
+  cursor: pointer;
+}
+
+
+.orders-table thead .col-seller,
+.orders-table thead .col-product,
+.orders-table thead .col-price {
+  z-index: 8;
+  background-color: var(--background-color-darker);
+}

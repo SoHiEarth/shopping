@@ -85,6 +85,37 @@ function parseOrderEntry(entry) {
   };
 }
 
+function buildNextOrders(orders, customerName, quantityToAdd) {
+  const existingLines = String(orders ?? '')
+    .split(/\r?\n/)
+    .filter(Boolean);
+  let matchedExistingOrder = false;
+
+  const nextLines = existingLines.map((line) => {
+    const parsedOrder = parseOrderEntry(line);
+    if (!parsedOrder) {
+      return line.trim();
+    }
+
+    if (parsedOrder.customerName !== customerName) {
+      return `${parsedOrder.customerName}:${parsedOrder.quantity}`;
+    }
+
+    if (matchedExistingOrder) {
+      return null;
+    }
+
+    matchedExistingOrder = true;
+    return `${parsedOrder.customerName}:${parsedOrder.quantity + quantityToAdd}`;
+  }).filter(Boolean);
+
+  if (!matchedExistingOrder) {
+    nextLines.push(`${customerName}:${quantityToAdd}`);
+  }
+
+  return nextLines.join('\n');
+}
+
 function countOrderedQuantity(orders) {
   return String(orders ?? '')
     .split(/\r?\n/)
@@ -146,7 +177,7 @@ function renderProducts(products) {
     productCard.className = 'product-card';
     productCard.dataset.productKey = productKey;
     productCard.innerHTML = `
-      <img src="${escapeHtml(productImage)}" alt="${escapeHtml(productName)}の画像" class="product-image">
+      <img src="${escapeHtml(productImage)}" class="product-image">
       <h2 class="noto-sans-jp-bold">${escapeHtml(productName)}</h2>
       <p>${escapeHtml(productDescription)}</p>
       <p>価格: ${escapeHtml(productPriceLabel)}</p>
@@ -157,7 +188,9 @@ function renderProducts(products) {
     detailCard.className = `product-detail-card product-detail-card-${productKey}`;
     detailCard.dataset.productKey = productKey;
     detailCard.innerHTML = `
+
       <img src="${escapeHtml(productImage)}" alt="${escapeHtml(productName)}の画像" class="product-detail-image">
+
       <div class="product-detail-info">
         <div class="product-detail-header">
           <h2 class="noto-sans-jp-bold">${escapeHtml(productName)}</h2>
@@ -253,8 +286,7 @@ async function addToCart(productKey) {
   const customerName = getCustomerName();
 
   if (product?.id !== undefined && product?.id !== null) {
-    const orderEntry = `${customerName}:${quantity}`;
-    const nextOrders = product.orders ? `${product.orders}\n${orderEntry}` : orderEntry;
+    const nextOrders = buildNextOrders(product.orders, customerName, quantity);
     const { error } = await supabase
       .from('items')
         .update({ orders: nextOrders })

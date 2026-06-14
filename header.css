@@ -18,6 +18,6 @@
 /* Don't horizontally grid the header on small screens */
 @media (max-width: 600px) {
   #header {
-    display: block;
+    font-size: clamp(0.7rem, 2vw, 2.5rem);
   }
 }
